@@ -1,7 +1,7 @@
 import Cookies from 'js-cookie';
 
 export class ApiClient {
-  private baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3010/api"
+  private baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5004/api"
 
   private getHeaders() {
     // We no longer need to manually set the Authorization header

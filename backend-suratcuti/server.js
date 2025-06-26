@@ -3,7 +3,7 @@ const app = require('./src/app'); // Menggunakan app dari file terpisah
 const { PrismaClient } = require('@prisma/client');
 
 const prisma = new PrismaClient();
-const PORT = process.env.PORT || 3010;
+const PORT = process.env.PORT || 5004;
 
 const startServer = async () => {
     try {
