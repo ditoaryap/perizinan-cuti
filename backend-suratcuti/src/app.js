@@ -8,7 +8,10 @@ const app = express();
 
 // Middleware
 app.use(cors({
-    origin: 'http://localhost:3000',
+    origin: [
+        'http://localhost:5003',
+        'http://156.67.218.83:5003'
+    ], // Ganti/extend sesuai domain frontend kamu
     credentials: true
 }));
 app.use(cookieParser());
