@@ -5,6 +5,32 @@ const prisma = new PrismaClient();
 const authMiddleware = require('../middleware/auth');
 const authorize = require('../middleware/authorize');
 
+// Endpoint untuk user mengganti password sendiri (tanpa authorize admin)
+router.put('/password', authMiddleware, async (req, res) => {
+    const { oldPassword, newPassword } = req.body;
+    const userId = req.user.id;
+
+    try {
+        const user = await prisma.user.findUnique({ where: { id: userId } });
+        if (!user) return res.status(404).json({ success: false, message: 'User tidak ditemukan' });
+
+        const isPasswordValid = await require('bcryptjs').compare(oldPassword, user.password);
+        if (!isPasswordValid) {
+            return res.status(400).json({ success: false, message: 'Password lama salah' });
+        }
+
+        const hashedNewPassword = await require('bcryptjs').hash(newPassword, 10);
+        await prisma.user.update({
+            where: { id: userId },
+            data: { password: hashedNewPassword }
+        });
+
+        res.json({ success: true, message: 'Password berhasil diubah' });
+    } catch (error) {
+        res.status(500).json({ success: false, message: 'Gagal mengubah password', error: error.message });
+    }
+});
+
 // Admin only
 router.use(authMiddleware, authorize('admin'));
 
@@ -64,32 +90,6 @@ router.delete('/:id', async (req, res) => {
         res.json({ success: true, message: 'User berhasil dihapus' });
     } catch (error) {
         res.status(400).json({ success: false, message: 'Gagal menghapus user', error: error.message });
-    }
-});
-
-// Endpoint untuk user mengganti password sendiri (tanpa authorize admin)
-router.put('/password', require('../middleware/auth'), async (req, res) => {
-    const { oldPassword, newPassword } = req.body;
-    const userId = req.user.id;
-
-    try {
-        const user = await prisma.user.findUnique({ where: { id: userId } });
-        if (!user) return res.status(404).json({ success: false, message: 'User tidak ditemukan' });
-
-        const isPasswordValid = await require('bcryptjs').compare(oldPassword, user.password);
-        if (!isPasswordValid) {
-            return res.status(400).json({ success: false, message: 'Password lama salah' });
-        }
-
-        const hashedNewPassword = await require('bcryptjs').hash(newPassword, 10);
-        await prisma.user.update({
-            where: { id: userId },
-            data: { password: hashedNewPassword }
-        });
-
-        res.json({ success: true, message: 'Password berhasil diubah' });
-    } catch (error) {
-        res.status(500).json({ success: false, message: 'Gagal mengubah password', error: error.message });
     }
 });
 
