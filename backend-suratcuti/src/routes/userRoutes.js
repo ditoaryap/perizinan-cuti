@@ -67,7 +67,7 @@ router.delete('/:id', async (req, res) => {
     }
 });
 
-// Endpoint untuk user mengganti password sendiri
+// Endpoint untuk user mengganti password sendiri (tanpa authorize admin)
 router.put('/password', require('../middleware/auth'), async (req, res) => {
     const { oldPassword, newPassword } = req.body;
     const userId = req.user.id;
