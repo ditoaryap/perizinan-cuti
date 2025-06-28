@@ -43,13 +43,15 @@ const getLaporan = async (req, res) => {
         });
 
         let jenisCutiTerbanyak = null;
-        if (cutiTerbanyak.length > 0) {
+        if (cutiTerbanyak.length > 0 && cutiTerbanyak[0].jenisCutiId) {
             const jenisCuti = await prisma.jenisCuti.findUnique({
                 where: { id: cutiTerbanyak[0].jenisCutiId }
             });
-            jenisCutiTerbanyak = {
-                nama: jenisCuti.nama,
-                total: cutiTerbanyak[0]._count.jenisCutiId,
+            if (jenisCuti) {
+                jenisCutiTerbanyak = {
+                    nama: jenisCuti.nama,
+                    total: cutiTerbanyak[0]._count.jenisCutiId,
+                }
             }
         }
 

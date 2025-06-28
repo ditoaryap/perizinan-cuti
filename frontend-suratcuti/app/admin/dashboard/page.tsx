@@ -12,7 +12,7 @@ interface LaporanData {
   disetujui: number
   ditolak: number
   diajukan: number
-  cuti_terbanyak: string
+  cuti_terbanyak: { nama: string; total: number } | null
   total_pegawai: number
   total_jenis_cuti: number
 }
@@ -270,9 +270,9 @@ export default function AdminDashboard() {
                     <div>
                       <p className="text-sm font-medium text-gray-700">Jenis Cuti Terbanyak</p>
                       <p className="text-lg font-semibold text-gray-900">
-                        {laporan?.cuti_terbanyak && typeof laporan.cuti_terbanyak === "object"
+                        {laporan?.cuti_terbanyak
                           ? `${laporan.cuti_terbanyak.nama} (${laporan.cuti_terbanyak.total} kali)`
-                          : laporan?.cuti_terbanyak || "Tidak ada data"}
+                          : "Tidak ada data"}
                       </p>
                     </div>
                   </div>
