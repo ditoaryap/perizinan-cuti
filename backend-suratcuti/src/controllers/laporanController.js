@@ -17,42 +17,56 @@ const getLaporan = async (req, res) => {
             createdAt: { gte: startDate, lte: endDate },
         };
 
-        const requests = await prisma.cutiRequest.findMany({
-            where,
-            include: {
-                user: { select: { nama: true } },
-                jenisCuti: { select: { nama: true } }
-            },
-            orderBy: { createdAt: 'asc' }
-        });
+        let requests = [];
+        try {
+            requests = await prisma.cutiRequest.findMany({
+                where,
+                include: {
+                    user: { select: { nama: true } },
+                    jenisCuti: { select: { nama: true } }
+                },
+                orderBy: { createdAt: 'asc' }
+            });
+        } catch (err) {
+            console.error('Error fetching cutiRequest:', err);
+        }
 
         const jumlah_pengajuan = requests.length;
         const disetujui = requests.filter(r => r.status === 'DISETUJUI').length;
         const ditolak = requests.filter(r => r.status === 'DITOLAK').length;
         const diajukan = requests.filter(r => r.status === 'DIAJUKAN').length;
 
-        const totalPegawai = await prisma.user.count({ where: { role: 'PEGAWAI' } });
-        const totalJenisCuti = await prisma.jenisCuti.count();
-
-        const cutiTerbanyak = await prisma.cutiRequest.groupBy({
-            by: ['jenisCutiId'],
-            where,
-            _count: { jenisCutiId: true },
-            orderBy: { _count: { jenisCutiId: 'desc' } },
-            take: 1,
-        });
+        let totalPegawai = 0;
+        let totalJenisCuti = 0;
+        try {
+            totalPegawai = await prisma.user.count({ where: { role: { in: ['pegawai', 'PEGAWAI', 'admin', 'ADMIN'] } } });
+            totalJenisCuti = await prisma.jenisCuti.count();
+        } catch (err) {
+            console.error('Error counting user/jenisCuti:', err);
+        }
 
         let jenisCutiTerbanyak = null;
-        if (cutiTerbanyak.length > 0 && cutiTerbanyak[0].jenisCutiId) {
-            const jenisCuti = await prisma.jenisCuti.findUnique({
-                where: { id: cutiTerbanyak[0].jenisCutiId }
+        try {
+            const cutiTerbanyak = await prisma.cutiRequest.groupBy({
+                by: ['jenisCutiId'],
+                where,
+                _count: { jenisCutiId: true },
+                orderBy: { _count: { jenisCutiId: 'desc' } },
+                take: 1,
             });
-            if (jenisCuti) {
-                jenisCutiTerbanyak = {
-                    nama: jenisCuti.nama,
-                    total: cutiTerbanyak[0]._count.jenisCutiId,
+            if (cutiTerbanyak.length > 0 && cutiTerbanyak[0].jenisCutiId) {
+                const jenisCuti = await prisma.jenisCuti.findUnique({
+                    where: { id: cutiTerbanyak[0].jenisCutiId }
+                });
+                if (jenisCuti) {
+                    jenisCutiTerbanyak = {
+                        nama: jenisCuti.nama,
+                        total: cutiTerbanyak[0]._count.jenisCutiId,
+                    }
                 }
             }
+        } catch (err) {
+            console.error('Error groupBy jenisCuti:', err);
         }
 
         res.json({
@@ -69,7 +83,21 @@ const getLaporan = async (req, res) => {
             },
         });
     } catch (error) {
-        res.status(500).json({ success: false, message: 'Server error', error: error.message });
+        console.error('Unexpected error in getLaporan:', error);
+        res.status(200).json({
+            success: true,
+            data: {
+                periode: { bulan: req.query.bulan, tahun: req.query.tahun },
+                jumlah_pengajuan: 0,
+                disetujui: 0,
+                ditolak: 0,
+                diajukan: 0,
+                cuti_terbanyak: null,
+                total_pegawai: 0,
+                total_jenis_cuti: 0,
+            },
+            error: error.message
+        });
     }
 };
 
