@@ -105,7 +105,7 @@ export default function AdminDashboard() {
               </CardContent>
             </Card>
 
-            <Card className="group hover:shadow-xl transition-all duration-300 border-0 bg-white/80 backdrop-blur-sm hover:bg-white/90 hover:-translate-y-1">
+            <Card className="group hover:shadow-xl transition-all duration-300 border-0 bg-white/80 backdrop-blur-sm hover:bg-white/90 hover:-translate-y-1 lg:col-span-2">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium text-gray-700">Disetujui</CardTitle>
                 <div className="p-2 bg-gradient-to-br from-green-500 to-green-600 rounded-lg">
@@ -118,7 +118,7 @@ export default function AdminDashboard() {
               </CardContent>
             </Card>
 
-            <Card className="group hover:shadow-xl transition-all duration-300 border-0 bg-white/80 backdrop-blur-sm hover:bg-white/90 hover:-translate-y-1">
+            <Card className="group hover:shadow-xl transition-all duration-300 border-0 bg-white/80 backdrop-blur-sm hover:bg-white/90 hover:-translate-y-1 lg:col-span-2">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium text-gray-700">Ditolak</CardTitle>
                 <div className="p-2 bg-gradient-to-br from-red-500 to-red-600 rounded-lg">
@@ -131,7 +131,7 @@ export default function AdminDashboard() {
             </CardContent>
           </Card>
 
-            <Card className="group hover:shadow-xl transition-all duration-300 border-0 bg-white/80 backdrop-blur-sm hover:bg-white/90 hover:-translate-y-1">
+            <Card className="group hover:shadow-xl transition-all duration-300 border-0 bg-white/80 backdrop-blur-sm hover:bg-white/90 hover:-translate-y-1 lg:col-span-2">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium text-gray-700">Menunggu</CardTitle>
                 <div className="p-2 bg-gradient-to-br from-yellow-500 to-yellow-600 rounded-lg">
@@ -144,7 +144,7 @@ export default function AdminDashboard() {
             </CardContent>
           </Card>
 
-            <Card className="group hover:shadow-xl transition-all duration-300 border-0 bg-white/80 backdrop-blur-sm hover:bg-white/90 hover:-translate-y-1">
+            <Card className="group hover:shadow-xl transition-all duration-300 border-0 bg-white/80 backdrop-blur-sm hover:bg-white/90 hover:-translate-y-1 lg:col-span-2">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium text-gray-700">Pegawai</CardTitle>
                 <div className="p-2 bg-gradient-to-br from-purple-500 to-purple-600 rounded-lg">
@@ -157,7 +157,7 @@ export default function AdminDashboard() {
             </CardContent>
           </Card>
 
-            <Card className="group hover:shadow-xl transition-all duration-300 border-0 bg-white/80 backdrop-blur-sm hover:bg-white/90 hover:-translate-y-1">
+            <Card className="group hover:shadow-xl transition-all duration-300 border-0 bg-white/80 backdrop-blur-sm hover:bg-white/90 hover:-translate-y-1 lg:col-span-2">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium text-gray-700">Jenis Cuti</CardTitle>
                 <div className="p-2 bg-gradient-to-br from-pink-500 to-pink-600 rounded-lg">

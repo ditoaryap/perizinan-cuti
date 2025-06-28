@@ -62,8 +62,8 @@ export default function UbahPassword() {
 
     setLoading(true)
     try {
-      await api.put("/user/password", {
-        currentPassword: formData.currentPassword,
+      await api.put("/users/password", {
+        oldPassword: formData.currentPassword,
         newPassword: formData.newPassword,
       })
 
