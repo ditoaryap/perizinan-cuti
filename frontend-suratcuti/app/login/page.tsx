@@ -18,6 +18,7 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
   const { login } = useAuth()
+  const [logoError, setLogoError] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -42,14 +43,21 @@ export default function LoginPage() {
             <div className="relative">
               <div className="absolute inset-0 bg-green-200 rounded-full blur-xl opacity-30"></div>
               <div className="relative bg-white p-4 rounded-full shadow-lg">
-                <Image
-                  src="/logo-kementan.png"
-                  alt="Logo Kementerian Pertanian"
-                  width={80}
-                  height={80}
-                  priority
-                  className="rounded-full"
-                />
+                {!logoError ? (
+                  <Image
+                    src="/logo-kementan.png"
+                    alt="Logo Kementerian Pertanian"
+                    width={80}
+                    height={80}
+                    priority
+                    className="rounded-full"
+                    onError={() => setLogoError(true)}
+                  />
+                ) : (
+                  <div className="w-20 h-20 flex items-center justify-center bg-gray-200 rounded-full text-gray-500 font-bold">
+                    LOGO
+                  </div>
+                )}
               </div>
             </div>
           </div>
