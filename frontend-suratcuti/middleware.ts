@@ -4,8 +4,15 @@ import type { NextRequest } from "next/server"
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
 
-  // Allow access to login page and root
-  if (pathname === "/login" || pathname === "/") {
+  // Allow access to login page, root, and all static files in public
+  if (
+    pathname === "/login" ||
+    pathname === "/" ||
+    pathname.startsWith("/_next/") ||
+    pathname.startsWith("/favicon.ico") ||
+    pathname.startsWith("/logo-kementan.png") ||
+    pathname.match(/\.(png|jpg|jpeg|svg|webp|ico|gif)$/)
+  ) {
     return NextResponse.next()
   }
 
